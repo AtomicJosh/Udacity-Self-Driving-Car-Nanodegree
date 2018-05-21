@@ -1,3 +1,0 @@
-Good one: https://github.com/hlfshell/Udacity-CarND-VehicleDetection/blob/master/Vehicle%20Detection%20Project.ipynb
-Maybe useful for ideas: https://github.com/Hotsuyuki/CarND-Vehicle-Detection/blob/master/P5.ipynb
-Maybe useful for ideas: https://github.com/vggg/CarND-Vehicle-Detection/blob/master/CarND-VehicleTracking-AdvancedLane.ipynb
