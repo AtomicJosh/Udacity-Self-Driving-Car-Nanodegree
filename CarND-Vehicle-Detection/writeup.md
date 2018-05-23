@@ -54,7 +54,7 @@ I tried the HOG method with the RGB, HLS, LUV, YUV, and YCrCb color spaces as se
 ![YCr](./examples/YCr_histo_3D.png)
 ![YUV](./examples/YUV_histo_3D.png)
 
-The results looked quite similar to each other, so I decided to stick with YCrCb because the Y channel corresponds to the light intensity while the Cr and Cb channels hold color information independent of brightness. This seems like it will be a good choice to minimize fluctuations in brightness.
+The results looked quite similar to each other, but through trial and error I found that the YUV color space worked best.
 
 I tested out the various color spaces with the HOG method to see how they would turn out (found in Vehicle-Detection.ipynb cell 12):
 
@@ -72,21 +72,21 @@ I then picked a several different settings for the HOG parameters, including ori
 ![HOG_dim3](./output_images/HOG_dim3.png)
 ![HOG_dim4](./output_images/HOG_dim4.png)
 
-Ultimately, it appears the settings with orientations = 11, pixels_per_cell = 10, and cells_per_block = 4 worked best.
+Ultimately, it appears the settings with orientations = 11, pixels_per_cell = 16, and cells_per_block = 2 worked best.
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
 I applied some random image augmentations (noise, brightness, blur, mirror) and normalization to help generalize the dataset. I then tested the LinearSVC, SVC, and Decision Tree classifiers for time and accuracy to decide on which to use (found in Vehicle-Detection.ipynb cell 23).
 
-Decision Tree training time: 133.41 seconds
-<br/>Decision Tree test accuracy: 0.9736
-<br/>Decision Tree prediction time: 0.04 seconds
-<br/>Linear SVC training time: 3.62 seconds
-<br/>Linear SVC test accuracy: 0.9932
-<br/>Linear SVC prediction time: 0.03 seconds
-<br/>SVC training time: 350.32 seconds
-<br/>SVC test accuracy: 0.9966
-<br/>SVC prediction time: 198.33 seconds
+Decision Tree training time: 64.43 seconds
+<br/>Decision Tree test accuracy: 0.9757
+<br/>Decision Tree prediction time: 0.02 seconds
+<br/>Linear SVC training time: 7.08 seconds
+<br/>Linear SVC test accuracy: 0.9935
+<br/>Linear SVC prediction time: 0.02 seconds
+<br/>SVC training time: 188.23 seconds
+<br/>SVC test accuracy: 0.9977
+<br/>SVC prediction time: 105.68 seconds
 
 Of the three, the SVC was the most accurate, but it took by far the longest to train. The LinearSVC was much faster and only had slightly less accuracy than the SVC, so I chose to stick with it. The Decision Tree took longer to train than the LinearSVC and had a bit worse accuracy.
 
@@ -118,7 +118,7 @@ I tested the different sliding window sizes on some test images to see how they 
 ### Video Implementation
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
-Here's a [link to my video result](./output_images/project_video.mp4)
+Here's a [link to my video result](./output_images/project_video_out.mp4)
 
 
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
@@ -142,6 +142,6 @@ In an effort to reduce the false positives, I implemented a memory to record car
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-As can be seen in the heatmap images above and in the video [no-memory project video](./output_images/project_video_no_memory.mp4), I have consistently had problems with false positives. Even in images with no cars, I had consistent false detections, so much so they even gave strong detections in the heatmaps. To overcome these false detections, I implemented a form of memory to remember the car positions from the previous frames. This caused a trade-off in the robustness of the vehicle detection in the video. As can be seen in the video, the bounding boxes consistently lag the cars and are slow to detect them. By dialing back the memory, the false positives increase.
+As can be seen in the heatmap images above and in the video [no-memory project video](./output_images/project_video_no_memory.mp4), I have consistently had problems with false positives. Even in images with no cars, I had consistent false detections, so much so they even gave strong detections in the heatmaps. To overcome these false detections, I implemented a form of memory to remember the car positions from the previous frames. This caused a trade-off in the robustness of the vehicle detection in the video, but it appears a fair balance has been achieved.
 
 To make this system more robust, I would like to implement an end-to-end deep learning object detection system and compare its performance to the approach taken in this project.
