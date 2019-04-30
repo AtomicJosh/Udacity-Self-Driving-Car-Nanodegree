@@ -168,7 +168,7 @@ int main() {
 
           if (too_close) {
             // the total acceleration should not exceed 10 m/s^2
-            ref_vel -= 0.2; // 0.224
+            ref_vel -= 0.224; // 0.224
               if (counter >= 60) { // counter prevents rapid lane changes
               if (lane > 0 && lane < number_of_lanes) {
                 if (left_lane_blocked == 0) {                  
@@ -192,7 +192,7 @@ int main() {
               }
             }
           } else if (ref_vel < 48.5) {
-            ref_vel += (1.0);
+            ref_vel += (0.224);
           }
 
           counter++;
